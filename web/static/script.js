@@ -2,7 +2,7 @@ $( document ).ready(function() {
 
     // Submits the form when button is clicked
     $('#sbmit').click(function() {
-      var api = "https://rxuwnhz9hhaobmxlx-mock.stoplight-proxy.io/api/test";
+      var api = "https://www.look-at-my.site/api/check";
       var site_data = $('#site').val();
       var comprehensive_data = false;
       if($('#comprehensive').is(":checked")) {
