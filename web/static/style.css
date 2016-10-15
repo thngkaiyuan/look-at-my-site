@@ -205,19 +205,6 @@ button:focus {
   margin-left: 1.8rem;
 }
 
-.footer-logo {
-  width: 130px;
-  height: 130px;
-  padding-bottom: 2rem;
-  margin-left: 50%;
-  -webkit-transform: translateX(-50%);
-       ms-transform: translateX(-50%);
-          transform: translateX(-50%);
-  background-image: url("../img/DROWN_logo.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
 footer {
   border-top: 1px solid #ccc;
   padding: 1rem 3rem;
