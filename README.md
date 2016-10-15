@@ -27,7 +27,20 @@
   3. For testing your code changes, it is easier to use `make serve` which will start the server and listen at port 8080.
   
  ## Todo
+ - [ ] Implement crawler
+ - [ ] Create separate queues for each checker
+ - [ ] Parse `comprehensive` parameter and call `CheckAll` or `CheckBasic` accordingly (basic only checks the root domain with the 3 basic checks whereas "all" checks subdomains and includes CORS and directory listing checkers)
  - [ ] Implement HSTS checker
  - [ ] Implement DNS rebinding checker
  - [ ] Implement CSP checker
+ - [ ] Fill in proper texts on the landing page
+ - [ ] Fill in proper texts for each checker
+    - [ ] HSTS
+    - [ ] DNS rebinding
+    - [ ] CSP
+    - [ ] CORS
+    - [ ] Directory listing
+ 
+ ## Stretch Goals
  - [ ] Implement CORS checker
+ - [ ] Implement directory listing checker
