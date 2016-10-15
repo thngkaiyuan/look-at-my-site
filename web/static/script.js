@@ -10,7 +10,7 @@ $( document ).ready(function() {
       }
 
       $.getJSON( api, {
-        site: site_data,
+        domain: site_data,
         comprehensive: comprehensive_data
       }).done(function(data) {
         render_results(data);
