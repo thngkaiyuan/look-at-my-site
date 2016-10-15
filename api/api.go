@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 
 	"golang.org/x/net/idna"
@@ -12,6 +13,12 @@ import (
 
 type API struct {
 	checker checker.Checker
+}
+
+type CheckPayload struct {
+	Domain string                  `json:"domain"`
+	Valid  bool                    `json:"valid"`
+	Checks []checker.CheckerResult `json:"checks,omitempty"`
 }
 
 func New() API {
@@ -26,7 +33,7 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	unicodeDomain := r.URL.Query().Get("domain")
+	unicodeDomain := html.EscapeString(r.URL.Query().Get("domain"))
 	if unicodeDomain == "" {
 		http.Error(w, "Domain name not specified.", http.StatusBadRequest)
 		return
@@ -39,8 +46,17 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	payload := CheckPayload{
+		Domain: asciiDomain,
+		Valid:  false,
+	}
+
 	results := api.checker.CheckAll(asciiDomain)
-	respondWithJSON(w, results)
+	if len(results) > 0 {
+		payload.Checks = results
+		payload.Valid = true
+	}
+	respondWithJSON(w, payload)
 }
 
 func respondWithJSON(w http.ResponseWriter, v interface{}) {

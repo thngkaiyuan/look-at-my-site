@@ -5,11 +5,20 @@ type CspChecker struct{}
 func (c CspChecker) Check(domain string, resultChannel chan CheckerResult) {
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
+	okUrls := []string{
+		"google.com",
+		"nus.edu.sg",
+	}
+	notOkUrls := []string{
+		"twitter.com",
+		"youtube.com",
+	}
 	result := CheckerResult{
-		Ok:          true,
-		Url:         "http://" + domain,
-		Title:       "CSP header is set correctly",
-		Description: "A proper CSP header is set to prevent XSS.",
+		Title:            "Content-Secuity-Policy",
+		OkDescription:    "The following subdomains have their CSP header properly set.",
+		OkUrls:           okUrls,
+		NotOkDescription: "The following subdomains do not set CSP header or have their CSP header set to \"inline\". They might be vulnerable to *Cross-Site-Scripting(XSS)* attacks.",
+		NotOkUrls:        notOkUrls,
 	}
 	resultChannel <- result
 }
