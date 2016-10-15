@@ -13,7 +13,7 @@ lint:
 	go vet ${PROJECT}
 
 .PHONY: pre-commit
-pre-commit: lint build test
+pre-commit: format lint build test
 
 CURRENT_DIR = "$(shell pwd)"
 EXPECTED_DIR = "${GOPATH}/src/github.com/thngkaiyuan/look-at-my-site"
