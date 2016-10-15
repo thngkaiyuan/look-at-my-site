@@ -405,3 +405,34 @@ footer {
 		background-color:rgb(255,255,255);
 	}
 }
+
+a.noul {
+    text-decoration: none;
+}
+
+.muted {
+  color: #666;
+}
+
+.oracle {
+    padding: 7px;
+    border-radius: 7px;
+    background-color: #E8E8E8;
+    width: 100%;
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.reason {
+  display: block;
+  font-size: small;
+  text-align: center;
+}
+
+.reason-danger {
+  color: #D90B00;
+}
+
+.reason-safe {
+    color: #008606;
+}
