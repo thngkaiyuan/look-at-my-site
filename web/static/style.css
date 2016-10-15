@@ -141,7 +141,7 @@ table > thead > tr > th {
 }
 
 .form-inline {
-  padding: 1.5rem 0rem 3rem;
+  padding: 1.5rem 0rem 2rem;
   background-color: #DDE8EF;
 }
 
@@ -153,7 +153,10 @@ table > thead > tr > th {
   height: 60px;
 }
 
-label { display: block; }
+label {
+  display: block;
+  font-size: small;
+}
 input, button {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -167,6 +170,17 @@ input {
   padding: 6px 12px;
   width: 70%;
 }
+
+input#comprehensive {
+    -webkit-appearance: checkbox;
+    width: initial;
+    padding: 10px;
+    margin-right: 5px;
+    vertical-align: bottom;
+    position: relative;
+    top: -3px;
+}
+
 button {
   color: white;
   background-color: #F1592A;
