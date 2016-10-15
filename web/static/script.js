@@ -1,22 +1,13 @@
 $( document ).ready(function() {
 
     // Submits the form when button is clicked
-    $('#sbmit').click(function() {
-      var api = "/api/check";
-      var site_data = $('#site').val();
-      var comprehensive_data = false;
-      if($('#comprehensive').is(":checked")) {
-        comprehensive_data = true;
+    $('#sbmit').click(submit_form);
+    // Submits the form when enter key is pressed
+    $('#site').bind("enterKey", submit_form);
+    $('#site').keyup(function(e) {
+      if(e.keyCode == 13) {
+        $(this).trigger("enterKey");
       }
-
-      $.getJSON( api, {
-        domain: site_data,
-        comprehensive: comprehensive_data
-      }).done(function(data) {
-        render_results(data);
-      }).fail(function( jqxhr, textStatus, error ) {
-        render_error(site_data);
-      });
     });
 
     // Attach the loader to Ajax starts & stops
@@ -33,6 +24,24 @@ $( document ).ready(function() {
         $loader.hide();
         $results.show();
       });
+
+      function submit_form() {
+        var api = "/api/check";
+        var site_data = $('#site').val();
+        var comprehensive_data = false;
+        if($('#comprehensive').is(":checked")) {
+          comprehensive_data = true;
+        }
+
+        $.getJSON( api, {
+          domain: site_data,
+          comprehensive: comprehensive_data
+        }).done(function(data) {
+          render_results(data);
+        }).fail(function( jqxhr, textStatus, error ) {
+          render_error(site_data);
+        });
+      }
 
     // Renders results on page according to the JSON data received
     function render_results(jsonData) {
