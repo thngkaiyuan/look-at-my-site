@@ -15,8 +15,7 @@ $( document ).ready(function() {
       }).done(function(data) {
         render_results(data);
       }).fail(function( jqxhr, textStatus, error ) {
-        var err = textStatus + ", " + error;
-        console.log( "Request Failed: " + err );
+        render_error(site_data);
       });
     });
 
@@ -76,7 +75,14 @@ $( document ).ready(function() {
         table += '</tbody></table>';
         $('#results-valid').append(table);
       });
+    }
 
+
+    // Displays an error message for invalid inputs
+    function render_error(domain) {
+      $('#root-domain').text(domain);
+      $('#results-invalid').show();
+      $('#results-valid').hide();
     }
 
     function wrap_paragraph(text) {
