@@ -1,4 +1,4 @@
-Look At My Site
+# Look At My Site
 
 ## Setup
 1. Install [golang](https://golang.org/doc/install)
