@@ -3,6 +3,8 @@
   <head>
       <link rel="icon" href="static/favicon.ico">
       <title>Look At My Site</title>
+      <script src="./static/jquery.min.js.download"></script>
+      <script src="./static/script.js"></script>
       <link href="./static/style.css" rel="stylesheet" type="text/css">
       <link href="./static/css" rel="stylesheet" type="text/css">
   </head>
@@ -15,17 +17,31 @@
       <div class="v-space"></div>
 
         <section>
-          <form class="form-inline" id="check" action="#" method="GET">
+          <div class="form-inline">
             <div class="form-container">
-              <input name="site" type="text" placeholder="domain.com" width="30">
-              <button>Look At My Site</button>
+              <input id="site" name="site" type="text" placeholder="domain.com" width="30">
+              <button id="sbmit">Look At My Site</button>
               <div style="height:5px"></div>
-              <label><input type="checkbox" id="comprehensive" value="comprehensive">Perform a more comprehensive scan (takes an additional 30 seconds)</label>
+              <label class="text-muted"><input type="checkbox" id="comprehensive" name="comprehensive" value="yes">Perform a more comprehensive scan (takes an additional 30 seconds)</label>
             </div>
-          </form>
+          </div>
         </section>
 
-       <section>
+        <section id="loader" style="display:none">
+          <div style="height:20px"></div>
+          <div id="fountainG">
+          	<div id="fountainG_1" class="fountainG"></div>
+          	<div id="fountainG_2" class="fountainG"></div>
+          	<div id="fountainG_3" class="fountainG"></div>
+          	<div id="fountainG_4" class="fountainG"></div>
+          	<div id="fountainG_5" class="fountainG"></div>
+          	<div id="fountainG_6" class="fountainG"></div>
+          	<div id="fountainG_7" class="fountainG"></div>
+          	<div id="fountainG_8" class="fountainG"></div>
+          </div>
+        </section>
+
+       <section id="info">
 
         <h3>What does Look At My Site do?</h3>
 
@@ -75,8 +91,6 @@
       </section>
 
       <div class="v-space"></div>
-
-      <script src="./static/jquery.min.js.download"></script>
 
 
 <span style="margin: 0px auto; position: absolute; z-index: 2147483647; visibility: hidden; left: 376px; width: 0px; top: 320px; height: 0px;"></span><span style="z-index: 2147483647; position: absolute; visibility: hidden; left: 361px; width: 50px; top: 305px; height: 20px; font-size: 10px; color: black;"></span></body></html>
