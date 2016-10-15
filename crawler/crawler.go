@@ -20,7 +20,7 @@ import (
 
 // define the use case of the crawler
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: crawler http://example.com/path/file.html\n")
+	fmt.Fprintf(os.Stderr, "usage: crawler http://example.com\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -33,7 +33,7 @@ func main() {
 	fmt.Println(args)
 	if len(args) < 1 {
 		usage()
-		fmt.Println("Please specify seed page")
+		fmt.Println("Please specify seed domain")
 		os.Exit(1)
 	}
 
@@ -77,8 +77,9 @@ func enqueue(uri string, queue chan string) {
 
 	for _, link := range links {
 		absolute := fixUrl(link, uri)
-		if uri != "" {
-			go func() { queue <- absolute }()
+		domain := getDomain(absolute)
+		if domain != "" {
+			go func() { queue <- domain }()
 		}
 	}
 }
@@ -94,6 +95,30 @@ func fixUrl(href, base string) string {
 	}
 	uri = baseUrl.ResolveReference(uri)
 	return uri.String()
+}
+
+func getDomain(uri string) string {
+	domain := uri
+	header := "http://"
+	// Remove protocol
+	if strings.Contains(domain, "http://") {
+		domain = strings.TrimLeft(domain, "http://")
+	} else if strings.Contains(uri, "https://") {
+		header = "https://"
+		domain = strings.TrimLeft(domain,"https://")
+	} else {
+		domain = ""
+	}
+	// Remove directory
+	if strings.Contains(domain, "/") {
+		domain = strings.TrimRight(strings.SplitAfter(domain, "/")[0], "/")
+	}
+	// Add protocoal
+	if len(domain) >= 1 {
+		domain = header + domain
+	}
+	// Return domain
+    return domain
 }
 
 /*
