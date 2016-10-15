@@ -38,9 +38,9 @@ $( document ).ready(function() {
     // Renders results on page according to the JSON data received
     function render_results(jsonData) {
       var data = jsonData;
-      var root_domain = data['root-domain'];
+      var root_domain = data['domain'];
       var valid = data['valid'];
-      var weaknesses = data['weaknesses'];
+      var weaknesses = data['checks'];
 
       $('#root-domain').text(root_domain);
       if(!valid) {
@@ -54,11 +54,11 @@ $( document ).ready(function() {
 
       $.each(weaknesses, function(index, weakness) {
         var table = '<table><col width="50%"><col width="50%"><tbody>';
-        var main_desc = style(weakness['main-description']);
-        var ok_desc = weakness['ok-description'];
-        var ok_urls = weakness['ok-urls'];
-        var not_ok_desc = weakness['not-ok-description'];
-        var not_ok_urls = weakness['not-ok-urls'];
+        var main_desc = style(weakness['title']);
+        var ok_desc = weakness['okDescription'];
+        var ok_urls = weakness['okUrls'];
+        var not_ok_desc = weakness['notOkDescription'];
+        var not_ok_urls = weakness['notOkUrls'];
 
         table += '<tr><td colspan="2" class="scan-desc">' + main_desc + '</td></tr>';
         table += '<tr><th style="text-align:left">Scanned Domains/URLs:</th><th>Scan Results:</th><tr>';
