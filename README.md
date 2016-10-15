@@ -33,6 +33,13 @@
  - [ ] Implement HSTS checker
  - [ ] Implement DNS rebinding checker
  - [ ] Implement CSP checker
+ - [ ] Fill in proper texts on the landing page
+ - [ ] Fill in proper texts for each checker
+    - [ ] HSTS
+    - [ ] DNS rebinding
+    - [ ] CSP
+    - [ ] CORS
+    - [ ] Directory listing
  
  ## Stretch Goals
  - [ ] Implement CORS checker
