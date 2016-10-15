@@ -55,6 +55,9 @@ $( document ).ready(function() {
         $('#results-invalid').show();
         $('#results-valid').hide();
         return;
+      } else {
+        $('#results-invalid').hide();
+        $('#results-valid').show();
       }
 
       // clear table
