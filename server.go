@@ -21,6 +21,7 @@ func main() {
 	a := api.New()
 	http.HandleFunc("/api/check", a.Check)
 
+	fmt.Printf("Start listening on port %s\n", port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err)
