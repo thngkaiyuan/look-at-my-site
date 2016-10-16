@@ -5,7 +5,7 @@ type DnsRebindingChecker struct{}
 func (c DnsRebindingChecker) Check(domain string, resultChannel chan CheckerResult) {
 	// If the domain does not support HTTP (i.e. only supports HTTPS), then it is secure
 	// Otherwise we check if we are able to connect to the domain using an invalid Host field in the header
-	
+
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
 	okUrls := []string{
