@@ -8,9 +8,9 @@ import (
 type HttpsChecker struct{}
 
 const (
-	title            = "HTTPS"
-	okDescription    = "HTTPS is enabled for these domains."
-	notOkDescription = "HTTPS is not enabled for these domains. Consider enabling HTTPS for security."
+	title            = "This scan checks if your domain supports *HTTPS*, a protocol for secure communication over a computer network. It protects the communication between your web server and its clients by means of encryption and authentication.\nWeb servers which do not support HTTPS are at risk of man-in-the-middle (MITM) attacks which include eavesdropping and tampering of communication contents."
+	okDescription    = "Safe against MITM attacks if HTTPS is used"
+	notOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
 )
 
 func (c HttpsChecker) Check(domains []string, resultChannel chan CheckerResult) {
