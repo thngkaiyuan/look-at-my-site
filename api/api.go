@@ -39,6 +39,8 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	comprehensive := r.URL.Query().Get("comprehensive") == "true"
+
 	asciiDomain, err := idna.ToASCII(unicodeDomain)
 	if err != nil {
 		msg := fmt.Sprintf("Internal Error: Domain name conversion failed. (%s)\n", err)
@@ -51,11 +53,18 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 		Valid:  false,
 	}
 
-	results := api.checker.CheckAll(asciiDomain)
+	var results []checker.CheckerResult
+	if comprehensive {
+		results = api.checker.CheckAll(asciiDomain)
+	} else {
+		results = api.checker.CheckBasic(asciiDomain)
+	}
+
 	if len(results) > 0 {
 		payload.Checks = results
 		payload.Valid = true
 	}
+
 	respondWithJSON(w, payload)
 }
 
