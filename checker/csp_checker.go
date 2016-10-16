@@ -3,6 +3,8 @@ package checker
 type CspChecker struct{}
 
 func (c CspChecker) Check(domain string, resultChannel chan CheckerResult) {
+	// Check for presence of CSP and absence of 'unsafe-inline' in the CSP header
+	
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
 	okUrls := []string{
@@ -14,10 +16,10 @@ func (c CspChecker) Check(domain string, resultChannel chan CheckerResult) {
 		"youtube.com",
 	}
 	result := CheckerResult{
-		Title:            "Content-Secuity-Policy",
-		OkDescription:    "The following subdomains have their CSP header properly set.",
+		Title:            "This scan checks the *Content-Secuity-Policy (CSP)* of your domain(s). The CSP response header helps you reduce cross-site scripting (XSS) risks on modern browsers by declaring what dynamic resources are allowed to load via the response header.\nWeb servers which do not use CSP or which support inline scripts are at risk of XSS, clickjacking and other code injection attacks.",
+		OkDescription:    "Safe against known XSS attacks",
 		OkUrls:           okUrls,
-		NotOkDescription: "The following subdomains do not set CSP header or have their CSP header set to \"inline\". They might be vulnerable to *Cross-Site-Scripting(XSS)* attacks.",
+		NotOkDescription: "Not safe because they either lack CSP or support 'unsafe-inline' scripts",
 		NotOkUrls:        notOkUrls,
 	}
 	resultChannel <- result
