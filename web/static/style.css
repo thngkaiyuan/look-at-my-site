@@ -82,7 +82,9 @@ section > * {
   margin: 0 auto;
 }
 
-.illustrated {  }
+.illustrated {
+  padding-left: 50px;
+}
 img {
   display: block;
   margin: 0 auto;
