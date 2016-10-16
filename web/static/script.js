@@ -64,8 +64,8 @@ $( document ).ready(function() {
       $('#results-valid').html('');
 
       $.each(weaknesses, function(index, weakness) {
-        if(not_ok_urls.length == 0 && ok_urls.length == 0) {
-          continue;
+        if(not_ok_urls.length === 0 && ok_urls.length === 0) {
+          return;
         }
 
         var table = '<table><col width="50%"><col width="50%"><tbody>';
