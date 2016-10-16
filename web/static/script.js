@@ -76,12 +76,12 @@ $( document ).ready(function() {
 
         table += '<tr>';
         table += '<td class="result"><b>' + not_ok_urls.join('<br>') + '</b></td>';
-        table += '<td><div class="oracle reason reason-danger">' + not_ok_desc + '</div></td>'
+        table += '<td><div class="oracle reason reason-danger">' + not_ok_desc + '</div></td>';
         table += '</tr>';
 
         table += '<tr>';
         table += '<td class="result"><b>' + ok_urls.join('<br>') + '</b></td>';
-        table += '<td><div class="oracle reason reason-safe">' + ok_desc + '</div></td>'
+        table += '<td><div class="oracle reason reason-safe">' + ok_desc + '</div></td>';
         table += '</tr>';
 
         table += '</tbody></table>';

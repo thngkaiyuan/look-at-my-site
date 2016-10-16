@@ -2,9 +2,9 @@ package checker
 
 type CspChecker struct{}
 
-func (c CspChecker) Check(domain string, resultChannel chan CheckerResult) {
+func (c CspChecker) Check(domains []string, resultChannel chan CheckerResult) {
 	// Check for presence of CSP and absence of 'unsafe-inline' in the CSP header
-	
+
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
 	okUrls := []string{

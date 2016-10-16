@@ -2,7 +2,7 @@ package checker
 
 type CorsChecker struct{}
 
-func (c CorsChecker) Check(domain string, resultChannel chan CheckerResult) {
+func (c CorsChecker) Check(domain []string, resultChannel chan CheckerResult) {
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
 	okUrls := []string{
