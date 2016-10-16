@@ -2,7 +2,7 @@ package checker
 
 type HstsChecker struct{}
 
-func (c HstsChecker) Check(domain string, resultChannel chan CheckerResult) {
+func (c HstsChecker) Check(domains []string, resultChannel chan CheckerResult) {
 	// Do whatever you wanna check, and put result into the channel.
 	// This is a stub result, you need to change it.
 	okUrls := []string{

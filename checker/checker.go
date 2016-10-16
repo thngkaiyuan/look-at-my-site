@@ -1,7 +1,7 @@
 package checker
 
 type ResponseChecker interface {
-	Check(domain string, resultChannel chan CheckerResult)
+	Check(domains []string, resultChannel chan CheckerResult)
 }
 
 type CheckerResult struct {
@@ -20,9 +20,7 @@ type Checker struct {
 
 func New() Checker {
 	basicCheckers := []ResponseChecker{
-		new(HstsChecker),
-		new(DnsRebindingChecker),
-		new(CspChecker),
+		new(HttpsChecker),
 	}
 	extraCheckers := []ResponseChecker{}
 	return Checker{basicCheckers, extraCheckers}
@@ -31,8 +29,9 @@ func New() Checker {
 func (c Checker) CheckBasic(domain string) []CheckerResult {
 	results := make([]CheckerResult, 0, len(c.basicCheckers))
 	resultChannel := make(chan CheckerResult)
+	domains := []string{domain}
 	for _, ckr := range c.basicCheckers {
-		go ckr.Check(domain, resultChannel)
+		go ckr.Check(domains, resultChannel)
 	}
 	for range c.basicCheckers {
 		result := <-resultChannel
@@ -48,8 +47,9 @@ func (c Checker) CheckBasic(domain string) []CheckerResult {
 func (c Checker) CheckAll(domain string) []CheckerResult {
 	results := make([]CheckerResult, 0, len(c.basicCheckers))
 	resultChannel := make(chan CheckerResult)
+	domains := []string{domain}
 	for _, ckr := range c.basicCheckers {
-		go ckr.Check(domain, resultChannel)
+		go ckr.Check(domains, resultChannel)
 	}
 	for range c.basicCheckers {
 		result := <-resultChannel

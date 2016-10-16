@@ -2,7 +2,7 @@ package checker
 
 type DnsRebindingChecker struct{}
 
-func (c DnsRebindingChecker) Check(domain string, resultChannel chan CheckerResult) {
+func (c DnsRebindingChecker) Check(domains []string, resultChannel chan CheckerResult) {
 	// If the domain does not support HTTP (i.e. only supports HTTPS), then it is secure
 	// Otherwise we check if we are able to connect to the domain using an invalid Host field in the header
 
