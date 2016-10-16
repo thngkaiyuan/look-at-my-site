@@ -14,10 +14,10 @@ func (c HstsChecker) Check(domain string, resultChannel chan CheckerResult) {
 		"youtube.com",
 	}
 	result := CheckerResult{
-		Title:            "This scan checks if your domain enforces HTTPS connections using *HTTP Strict Transport Security (HSTS)*. Without enforcing HSTS, an attacker with man-in-the-middle capability could potentially perform HTTPS downgrade attacks to compromise communications between your web server and its clients.\nVulnerable web servers should...",
+		Title:            "This scan checks if your domain uses *HTTP Strict Transport Security (HSTS)*, which is a web security policy mechanism that allows web servers to declare that user agents should only interact with it using secure HTTPS connections.\nWithout HSTS, web servers may be vulnerable to protocol downgrade and cookie hijacking attacks. Web administrators are strongly encouraged to adopt HSTS on their web servers to thwart these attacks.",
 		OkDescription:    "Safe because HSTS is enforced",
 		OkUrls:           okUrls,
-		NotOkDescription: "Vulnerable because HSTS is not enforced",
+		NotOkDescription: "Not safe because HSTS is not enforced",
 		NotOkUrls:        notOkUrls,
 	}
 	resultChannel <- result
