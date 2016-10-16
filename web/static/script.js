@@ -64,16 +64,16 @@ $( document ).ready(function() {
       $('#results-valid').html('');
 
       $.each(weaknesses, function(index, weakness) {
-        if(not_ok_urls.length === 0 && ok_urls.length === 0) {
-          return;
-        }
-
         var table = '<table><col width="50%"><col width="50%"><tbody>';
         var main_desc = style(weakness['title']);
         var ok_desc = weakness['okDescription'];
         var ok_urls = weakness['okUrls'];
         var not_ok_desc = weakness['notOkDescription'];
         var not_ok_urls = weakness['notOkUrls'];
+
+        if(not_ok_urls.length === 0 && ok_urls.length === 0) {
+          return;
+        }
 
         table += '<tr><td colspan="2" class="scan-desc"><h3>Scan #' + (index+1) + '</h3>' + main_desc + '</td></tr>';
         table += '<tr><th style="text-align:left">Scanned Domains/URLs:</th><th>Scan Results:</th><tr>';
