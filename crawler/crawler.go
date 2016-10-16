@@ -38,14 +38,18 @@ func main() {
 	}
 
 	queue := make(chan string)
+	
 	filteredQueue := make(chan string)
+
+	seedDomain := getDomain(args[0])
+	fmt.Println("seed domain: ", seedDomain)
 
 	go func() { queue <- args[0] }()
 	go filterQueue(queue, filteredQueue)
 
 	// pull from the filtered queue, add to the unfiltered queue
 	for uri := range filteredQueue {
-		enqueue(uri, queue)
+		enqueue(uri, queue, seedDomain)
 	}
 }
 
@@ -59,7 +63,7 @@ func filterQueue(in chan string, out chan string) {
 	}
 }
 
-func enqueue(uri string, queue chan string) {
+func enqueue(uri string, queue chan string, seedDomain string) {
 	fmt.Println("fetching", uri)
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{
@@ -77,9 +81,8 @@ func enqueue(uri string, queue chan string) {
 
 	for _, link := range links {
 		absolute := fixUrl(link, uri)
-		domain := getDomain(absolute)
-		if domain != "" {
-			go func() { queue <- domain }()
+		if (absolute != "") && underDomain(absolute, seedDomain) {
+			go func() { queue <- absolute }()
 		}
 	}
 }
@@ -99,26 +102,27 @@ func fixUrl(href, base string) string {
 
 func getDomain(uri string) string {
 	domain := uri
-	header := "http://"
+	
 	// Remove protocol
 	if strings.Contains(domain, "http://") {
 		domain = strings.TrimLeft(domain, "http://")
 	} else if strings.Contains(uri, "https://") {
-		header = "https://"
 		domain = strings.TrimLeft(domain,"https://")
 	} else {
 		domain = ""
 	}
+
 	// Remove directory
 	if strings.Contains(domain, "/") {
 		domain = strings.TrimRight(strings.SplitAfter(domain, "/")[0], "/")
 	}
-	// Add protocoal
-	if len(domain) >= 1 {
-		domain = header + domain
-	}
+
 	// Return domain
     return domain
+}
+
+func underDomain(uri string, domain string) bool {
+	return strings.Contains(uri, domain)
 }
 
 /*
