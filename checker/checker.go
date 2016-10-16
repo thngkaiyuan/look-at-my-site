@@ -14,26 +14,44 @@ type CheckerResult struct {
 }
 
 type Checker struct {
-	checkers []ResponseChecker
+	basicCheckers []ResponseChecker
+	extraCheckers []ResponseChecker
 }
 
 func New() Checker {
-	checkers := []ResponseChecker{
+	basicCheckers := []ResponseChecker{
 		new(HstsChecker),
 		new(DnsRebindingChecker),
 		new(CspChecker),
-		new(CorsChecker),
 	}
-	return Checker{checkers}
+	extraCheckers := []ResponseChecker{}
+	return Checker{basicCheckers, extraCheckers}
+}
+
+func (c Checker) CheckBasic(domain string) []CheckerResult {
+	results := make([]CheckerResult, 0, len(c.basicCheckers))
+	resultChannel := make(chan CheckerResult)
+	for _, ckr := range c.basicCheckers {
+		go ckr.Check(domain, resultChannel)
+	}
+	for range c.basicCheckers {
+		result := <-resultChannel
+		if result.err != nil {
+			continue
+		}
+		results = append(results, result)
+	}
+	return results
+
 }
 
 func (c Checker) CheckAll(domain string) []CheckerResult {
-	results := make([]CheckerResult, 0, len(c.checkers))
+	results := make([]CheckerResult, 0, len(c.basicCheckers))
 	resultChannel := make(chan CheckerResult)
-	for _, ckr := range c.checkers {
+	for _, ckr := range c.basicCheckers {
 		go ckr.Check(domain, resultChannel)
 	}
-	for range c.checkers {
+	for range c.basicCheckers {
 		result := <-resultChannel
 		if result.err != nil {
 			continue
