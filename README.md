@@ -44,5 +44,7 @@
     - [ ] Directory listing
  
  ## Stretch Goals
+ - [ ] Queueing of scan requests
+ - [ ] Caching of scan results from past 15mins
  - [ ] Implement CORS checker
  - [ ] Implement directory listing checker
