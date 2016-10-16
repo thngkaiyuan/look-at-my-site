@@ -71,7 +71,7 @@ $( document ).ready(function() {
         var not_ok_desc = weakness['notOkDescription'];
         var not_ok_urls = weakness['notOkUrls'];
 
-        table += '<tr><td colspan="2" class="scan-desc">' + main_desc + '</td></tr>';
+        table += '<tr><td colspan="2" class="scan-desc"><h3>Scan #' + (index+1) + '</h3>' + main_desc + '</td></tr>';
         table += '<tr><th style="text-align:left">Scanned Domains/URLs:</th><th>Scan Results:</th><tr>';
 
         table += '<tr>';
