@@ -17,7 +17,7 @@ func (c CspChecker) Check(domain string, resultChannel chan CheckerResult) {
 	}
 	result := CheckerResult{
 		Title:            "This scan checks the *Content-Secuity-Policy (CSP)* of your domain(s). The CSP response header helps you reduce cross-site scripting (XSS) risks on modern browsers by declaring what dynamic resources are allowed to load via the response header.\nWeb servers which do not use CSP or which support inline scripts are at risk of XSS, clickjacking and other code injection attacks.",
-		OkDescription:    "Safe against most XSS attacks",
+		OkDescription:    "Safe against known XSS attacks",
 		OkUrls:           okUrls,
 		NotOkDescription: "Not safe because they either lack CSP or support 'unsafe-inline' scripts",
 		NotOkUrls:        notOkUrls,
