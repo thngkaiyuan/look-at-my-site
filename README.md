@@ -34,12 +34,12 @@
  - [ ] Implement HSTS checker
  - [ ] Implement DNS rebinding checker
  - [ ] Implement CSP checker
- - [ ] Fill in proper texts on the landing page
+ - [x] Fill in proper texts on the landing page
  - [ ] Fill in proper texts for each checker
-    - [ ] HTTPS
-    - [ ] HSTS
-    - [ ] DNS rebinding
-    - [ ] CSP
+    - [x] HTTPS
+    - [x] HSTS
+    - [x] DNS rebinding
+    - [x] CSP
     - [ ] CORS
     - [ ] Directory listing
  
