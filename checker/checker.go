@@ -19,6 +19,7 @@ type Checker struct {
 
 func New() Checker {
 	checkers := []ResponseChecker{
+		new(HttpsChecker),
 		new(HstsChecker),
 		new(DnsRebindingChecker),
 		new(CspChecker),
