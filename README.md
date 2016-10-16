@@ -30,11 +30,13 @@
  - [ ] Implement crawler
  - [ ] Create separate queues for each checker
  - [ ] Parse `comprehensive` parameter and call `CheckAll` or `CheckBasic` accordingly (basic only checks the root domain with the 3 basic checks whereas "all" checks subdomains and includes CORS and directory listing checkers)
+ - [ ] Implement HTTPS checker
  - [ ] Implement HSTS checker
  - [ ] Implement DNS rebinding checker
  - [ ] Implement CSP checker
  - [ ] Fill in proper texts on the landing page
  - [ ] Fill in proper texts for each checker
+    - [ ] HTTPS
     - [ ] HSTS
     - [ ] DNS rebinding
     - [ ] CSP
