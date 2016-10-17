@@ -3,6 +3,7 @@ PROJECT = github.com/thngkaiyuan/look-at-my-site
 .PHONY: deps
 deps:
 	go get golang.org/x/net/idna
+	go get github.com/PuerkitoBio/gocrawl
 
 .PHONY: build
 build:
