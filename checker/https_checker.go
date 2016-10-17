@@ -3,6 +3,7 @@ package checker
 import (
 	"errors"
 	"net/http"
+	"time"
 )
 
 type HttpsChecker struct{}
@@ -12,6 +13,10 @@ const (
 	okDescription    = "Safe against MITM attacks if HTTPS is used"
 	notOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
 )
+
+var httpClient = http.Client{
+	Timeout: 3 * time.Second,
+}
 
 func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	okUrls := make([]string, 0)
@@ -51,8 +56,8 @@ func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 }
 
 func checkSite(domain string, okCh chan string, notOkCh chan string) {
-	_, httpErr := http.Head("http://" + domain)
-	_, httpsErr := http.Head("https://" + domain)
+	_, httpErr := httpClient.Head("http://" + domain)
+	_, httpsErr := httpClient.Head("https://" + domain)
 
 	if httpErr != nil && httpsErr != nil {
 		// Domain is down, ignore.
