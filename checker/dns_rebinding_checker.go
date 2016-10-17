@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 type DnsRebindingChecker struct{}
@@ -56,10 +55,10 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 	// If the domain does not support HTTP (i.e. only supports HTTPS), then it is secure
 	// Otherwise we check if we are able to connect to the domain using an invalid Host field in the header
 
-	resp, err := httpClient.Head("http://" + domain)
+	_, err := httpClient.Head("http://" + domain)
 
 	if err != nil {
-		resp, err = httpClient.Head("https://" + domain)
+		_, err = httpClient.Head("https://" + domain)
 
 		if err != nil {
 			// Domain is down, ignore.
