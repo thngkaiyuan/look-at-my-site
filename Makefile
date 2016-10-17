@@ -4,6 +4,7 @@ PROJECT = github.com/thngkaiyuan/look-at-my-site
 deps:
 	go get golang.org/x/net/idna
 	go get github.com/PuerkitoBio/gocrawl
+	go get github.com/abiosoft/semaphore
 
 .PHONY: build
 build:

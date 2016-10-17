@@ -9,10 +9,12 @@ import (
 	"golang.org/x/net/idna"
 
 	"github.com/thngkaiyuan/look-at-my-site/checker"
+	"github.com/abiosoft/semaphore"
 )
 
 type API struct {
 	checker checker.Checker
+	semaphore *semaphore.Semaphore
 }
 
 type CheckPayload struct {
@@ -21,21 +23,24 @@ type CheckPayload struct {
 	Checks []checker.CheckerResult `json:"checks,omitempty"`
 }
 
-func New() API {
-	return API{checker: checker.New()}
+func New(s *semaphore.Semaphore) API {
+	return API{checker: checker.New(), semaphore: s}
 }
 
 func (api API) Check(w http.ResponseWriter, r *http.Request) {
+	api.semaphore.Acquire()
 	fmt.Printf("Received request: %s\n", r.URL)
 	if r.Method != http.MethodGet {
 		msg := fmt.Sprintf("This API endpoint only allows %s method. \n", http.MethodGet)
 		http.Error(w, msg, http.StatusMethodNotAllowed)
+		api.semaphore.Release()
 		return
 	}
 
 	unicodeDomain := html.EscapeString(r.URL.Query().Get("domain"))
 	if unicodeDomain == "" {
 		http.Error(w, "Domain name not specified.", http.StatusBadRequest)
+		api.semaphore.Release()
 		return
 	}
 
@@ -45,6 +50,7 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := fmt.Sprintf("Internal Error: Domain name conversion failed. (%s)\n", err)
 		http.Error(w, msg, http.StatusInternalServerError)
+		api.semaphore.Release()
 		return
 	}
 
@@ -66,6 +72,7 @@ func (api API) Check(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondWithJSON(w, payload)
+	api.semaphore.Release()
 }
 
 func respondWithJSON(w http.ResponseWriter, v interface{}) {

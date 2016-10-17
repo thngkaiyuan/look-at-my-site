@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/thngkaiyuan/look-at-my-site/api"
+	"github.com/abiosoft/semaphore"
 )
 
 const (
@@ -18,7 +19,8 @@ func main() {
 	http.Handle("/favicon.ico", staticHandler)
 	http.Handle("/static/", staticHandler)
 
-	a := api.New()
+	s := semaphore.New(3)
+	a := api.New(s)
 	http.HandleFunc("/api/check", a.Check)
 
 	fmt.Printf("Start listening on port %s\n", port)
