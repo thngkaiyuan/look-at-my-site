@@ -16,20 +16,22 @@ const (
 func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	okUrls := make([]string, 0)
 	notOkUrls := make([]string, 0)
+	okCh := make(chan string, 16)
+	notOkCh := make(chan string, 16)
 
+	count := 0
 	for domain := range in {
-		_, httpErr := http.Head("http://" + domain)
-		_, httpsErr := http.Head("https://" + domain)
+		count++
+		go checkSite(domain, okCh, notOkCh)
+	}
 
-		if httpErr != nil && httpsErr != nil {
-			// Domain is down, ignore.
-			continue
-		}
-
-		if httpsErr != nil {
-			notOkUrls = append(notOkUrls, domain)
-		} else {
+	for i := 0; i < count; i++ {
+		select {
+		case domain := <-okCh:
 			okUrls = append(okUrls, domain)
+		case domain := <-notOkCh:
+			notOkUrls = append(notOkUrls, domain)
+		default:
 		}
 	}
 
@@ -46,4 +48,20 @@ func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	}
 
 	out <- result
+}
+
+func checkSite(domain string, okCh chan string, notOkCh chan string) {
+	_, httpErr := http.Head("http://" + domain)
+	_, httpsErr := http.Head("https://" + domain)
+
+	if httpErr != nil && httpsErr != nil {
+		// Domain is down, ignore.
+		return
+	}
+
+	if httpsErr != nil {
+		notOkCh <- domain
+	} else {
+		okCh <- domain
+	}
 }

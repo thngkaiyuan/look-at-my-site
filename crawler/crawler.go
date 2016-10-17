@@ -1,17 +1,18 @@
-package main
+package crawler
 
 // run "go get golang.org/x/net/html" before importing "golang.org/x/net/html"
 import (
 	"crypto/tls"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
-	"io"
 	"strconv"
 	"strings"
 	"time"
+
 	"golang.org/x/net/html"
 )
 
@@ -43,7 +44,7 @@ func main() {
 
 	seedDomain := getDomain(args[0])
 	includeSubdomain := true
-	if (args[1] == "0") {
+	if args[1] == "0" {
 		includeSubdomain = false
 	}
 	fmt.Println("seed domain: ", seedDomain)
@@ -56,7 +57,7 @@ func main() {
 	for uri := range filteredQueue {
 		enqueue(uri, queue, seedDomain, includeSubdomain)
 		duration := time.Since(startTime)
-		if (duration > time.Second * 30) {
+		if duration > time.Second*30 {
 			fmt.Println("Crawler expired")
 			break
 		}
@@ -91,7 +92,7 @@ func enqueue(uri string, queue chan string, seedDomain string, includeSubdomain 
 
 	for _, link := range links {
 		absolute := fixUrl(link, uri)
-		if (absolute != "") {
+		if absolute != "" {
 			if includeSubdomain {
 				if underDomain(absolute, seedDomain) {
 					go func() { queue <- absolute }()
@@ -129,7 +130,7 @@ func getDomain(uri string) string {
 	if strings.HasPrefix(domain, "http://") {
 		domain = strings.TrimLeft(domain, "http://")
 	} else if strings.HasPrefix(domain, "https://") {
-		domain = strings.TrimLeft(domain,"https://")
+		domain = strings.TrimLeft(domain, "https://")
 	} else {
 		domain = ""
 	}
@@ -145,7 +146,7 @@ func getDomain(uri string) string {
 	}
 
 	// Return domain
-    return domain
+	return domain
 }
 
 func underDomain(uri string, domain string) bool {
