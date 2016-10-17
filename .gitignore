@@ -1,2 +1,9 @@
 # Binary
 /look-at-my-site
+
+# Log files
+*.err
+*.log
+
+# PID files
+*.pid
