@@ -34,6 +34,7 @@ func New() Checker {
 		new(HttpsChecker),
 		new(HstsChecker),
 		new(CspChecker),
+		new(DnsRebindingChecker)
 	}
 	extraCheckers := []ResponseChecker{}
 	return Checker{basicCheckers, extraCheckers}
