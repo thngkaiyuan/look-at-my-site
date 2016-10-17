@@ -11,6 +11,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	"time"
 	"golang.org/x/net/html"
 )
 
@@ -20,7 +21,7 @@ import (
 
 // define the use case of the crawler
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: crawler http://example.com\n")
+	fmt.Fprintf(os.Stderr, "usage: crawler http://example.com 0/1\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -31,21 +32,34 @@ func main() {
 
 	args := flag.Args()
 	fmt.Println(args)
-	if len(args) < 1 {
+	if len(args) < 2 {
 		usage()
-		fmt.Println("Please specify seed domain")
+		fmt.Println("Please specify seed domain and whether to include subdomain")
 		os.Exit(1)
 	}
 
 	queue := make(chan string)
 	filteredQueue := make(chan string)
 
+	seedDomain := getDomain(args[0])
+	includeSubdomain := true
+	if (args[1] == "0") {
+		includeSubdomain = false
+	}
+	fmt.Println("seed domain: ", seedDomain)
+
 	go func() { queue <- args[0] }()
 	go filterQueue(queue, filteredQueue)
 
 	// pull from the filtered queue, add to the unfiltered queue
+	startTime := time.Now()
 	for uri := range filteredQueue {
-		enqueue(uri, queue)
+		enqueue(uri, queue, seedDomain, includeSubdomain)
+		duration := time.Since(startTime)
+		if (duration > time.Second * 30) {
+			fmt.Println("Crawler expired")
+			break
+		}
 	}
 }
 
@@ -59,7 +73,7 @@ func filterQueue(in chan string, out chan string) {
 	}
 }
 
-func enqueue(uri string, queue chan string) {
+func enqueue(uri string, queue chan string, seedDomain string, includeSubdomain bool) {
 	fmt.Println("fetching", uri)
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{
@@ -77,9 +91,20 @@ func enqueue(uri string, queue chan string) {
 
 	for _, link := range links {
 		absolute := fixUrl(link, uri)
-		domain := getDomain(absolute)
-		if domain != "" {
-			go func() { queue <- domain }()
+		if (absolute != "") {
+			if includeSubdomain {
+				if underDomain(absolute, seedDomain) {
+					go func() { queue <- absolute }()
+				} else {
+					fmt.Println("not under domain ／ subdomain : ", absolute)
+				}
+			} else {
+				if strictlyUnderDomain(absolute, seedDomain) {
+					go func() { queue <- absolute }()
+				} else {
+					fmt.Println("not under domain ／ subdomain : ", absolute)
+				}
+			}
 		}
 	}
 }
@@ -99,26 +124,38 @@ func fixUrl(href, base string) string {
 
 func getDomain(uri string) string {
 	domain := uri
-	header := "http://"
+
 	// Remove protocol
-	if strings.Contains(domain, "http://") {
+	if strings.HasPrefix(domain, "http://") {
 		domain = strings.TrimLeft(domain, "http://")
-	} else if strings.Contains(uri, "https://") {
-		header = "https://"
+	} else if strings.HasPrefix(domain, "https://") {
 		domain = strings.TrimLeft(domain,"https://")
 	} else {
 		domain = ""
 	}
-	// Remove directory
+
+	// Remove www
+	if strings.HasPrefix(domain, "www.") {
+		domain = strings.TrimLeft(domain, "www.")
+	}
+
+	// Remove path
 	if strings.Contains(domain, "/") {
 		domain = strings.TrimRight(strings.SplitAfter(domain, "/")[0], "/")
 	}
-	// Add protocoal
-	if len(domain) >= 1 {
-		domain = header + domain
-	}
+
 	// Return domain
     return domain
+}
+
+func underDomain(uri string, domain string) bool {
+	myDomain := getDomain(uri)
+	return strings.Contains(myDomain, domain)
+}
+
+func strictlyUnderDomain(uri string, domain string) bool {
+	myDomain := getDomain(uri)
+	return (myDomain == domain)
 }
 
 /*
