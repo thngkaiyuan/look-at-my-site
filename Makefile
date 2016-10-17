@@ -1,5 +1,9 @@
 PROJECT = github.com/thngkaiyuan/look-at-my-site
 
+.PHONY: deps
+deps:
+	go get golang.org/x/net/idna
+
 .PHONY: build
 build:
 	go build ${PROJECT}
