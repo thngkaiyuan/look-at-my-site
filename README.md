@@ -31,9 +31,9 @@
  - [x] Create separate queues for each checker
  - [x] Parse `comprehensive` parameter and call `CheckAll` or `CheckBasic` accordingly (basic only checks the root domain with the 3 basic checks whereas "all" checks subdomains and includes CORS and directory listing checkers)
  - [x] Implement HTTPS checker
- - [ ] Implement HSTS checker
+ - [x] Implement HSTS checker
  - [ ] Implement DNS rebinding checker
- - [ ] Implement CSP checker
+ - [x] Implement CSP checker
  - [x] Fill in proper texts on the landing page
  - [ ] Fill in proper texts for each checker
     - [x] HTTPS
