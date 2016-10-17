@@ -11,6 +11,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	//"time"
 	"golang.org/x/net/html"
 )
 
@@ -38,7 +39,6 @@ func main() {
 	}
 
 	queue := make(chan string)
-	
 	filteredQueue := make(chan string)
 
 	seedDomain := getDomain(args[0])
@@ -46,7 +46,6 @@ func main() {
 	if (args[1] == "0") {
 		includeSubdomain = false
 	}
-	
 	fmt.Println("seed domain: ", seedDomain)
 
 	go func() { queue <- args[0] }()
@@ -121,15 +120,20 @@ func getDomain(uri string) string {
 	domain := uri
 
 	// Remove protocol
-	if strings.Contains(domain, "http://") {
+	if strings.HasPrefix(domain, "http://") {
 		domain = strings.TrimLeft(domain, "http://")
-	} else if strings.Contains(uri, "https://") {
+	} else if strings.HasPrefix(domain, "https://") {
 		domain = strings.TrimLeft(domain,"https://")
 	} else {
 		domain = ""
 	}
 
-	// Remove directory
+	// Remove www
+	if strings.HasPrefix(domain, "www.") {
+		domain = strings.TrimLeft(domain, "www.")
+	}
+
+	// Remove path
 	if strings.Contains(domain, "/") {
 		domain = strings.TrimRight(strings.SplitAfter(domain, "/")[0], "/")
 	}
@@ -139,7 +143,8 @@ func getDomain(uri string) string {
 }
 
 func underDomain(uri string, domain string) bool {
-	return strings.Contains(uri, domain)
+	myDomain := getDomain(uri)
+	return strings.Contains(myDomain, domain)
 }
 
 func strictlyUnderDomain(uri string, domain string) bool {
