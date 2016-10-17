@@ -13,11 +13,11 @@ const (
 	notOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
 )
 
-func (c HttpsChecker) Check(domains []string, resultChannel chan CheckerResult) {
-	okUrls := make([]string, 0, len(domains))
-	notOkUrls := make([]string, 0, len(domains))
+func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
+	okUrls := make([]string, 0)
+	notOkUrls := make([]string, 0)
 
-	for _, domain := range domains {
+	for domain := range in {
 		_, httpErr := http.Head("http://" + domain)
 		_, httpsErr := http.Head("https://" + domain)
 
@@ -45,5 +45,5 @@ func (c HttpsChecker) Check(domains []string, resultChannel chan CheckerResult) 
 		result.err = errors.New("All domains are down.")
 	}
 
-	resultChannel <- result
+	out <- result
 }

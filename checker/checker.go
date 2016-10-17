@@ -1,7 +1,7 @@
 package checker
 
 type ResponseChecker interface {
-	Check(domains []string, resultChannel chan CheckerResult)
+	Check(in chan string, out chan CheckerResult)
 }
 
 type CheckerResult struct {
@@ -28,12 +28,18 @@ func New() Checker {
 
 func (c Checker) CheckBasic(domain string) []CheckerResult {
 	results := make([]CheckerResult, 0, len(c.basicCheckers))
+
+	domainChannels := make([]chan string, len(c.basicCheckers))
 	resultChannel := make(chan CheckerResult)
-	domains := []string{domain}
-	for _, ckr := range c.basicCheckers {
-		go ckr.Check(domains, resultChannel)
+
+	for i, ckr := range c.basicCheckers {
+		domainChannels[i] = make(chan string)
+		go ckr.Check(domainChannels[i], resultChannel)
 	}
-	for range c.basicCheckers {
+
+	for i := range c.basicCheckers {
+		domainChannels[i] <- domain
+		close(domainChannels[i])
 		result := <-resultChannel
 		if result.err != nil {
 			continue
@@ -41,17 +47,21 @@ func (c Checker) CheckBasic(domain string) []CheckerResult {
 		results = append(results, result)
 	}
 	return results
-
 }
 
 func (c Checker) CheckAll(domain string) []CheckerResult {
 	results := make([]CheckerResult, 0, len(c.basicCheckers))
+
+	domainChannels := make([]chan string, len(c.basicCheckers))
 	resultChannel := make(chan CheckerResult)
-	domains := []string{domain}
-	for _, ckr := range c.basicCheckers {
-		go ckr.Check(domains, resultChannel)
+
+	for i, ckr := range c.basicCheckers {
+		domainChannels[i] = make(chan string)
+		go ckr.Check(domainChannels[i], resultChannel)
 	}
-	for range c.basicCheckers {
+	for i := range c.basicCheckers {
+		domainChannels[i] <- domain
+		close(domainChannels[i])
 		result := <-resultChannel
 		if result.err != nil {
 			continue
