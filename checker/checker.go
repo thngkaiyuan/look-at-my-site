@@ -33,6 +33,7 @@ func New() Checker {
 	basicCheckers := []ResponseChecker{
 		new(HttpsChecker),
 		new(HstsChecker),
+		new(CspChecker),
 	}
 	extraCheckers := []ResponseChecker{}
 	return Checker{basicCheckers, extraCheckers}
