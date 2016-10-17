@@ -15,7 +15,7 @@ const (
 )
 
 var httpClient = http.Client{
-	Timeout: 3 * time.Second,
+	Timeout: 2 * time.Second,
 }
 
 func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {

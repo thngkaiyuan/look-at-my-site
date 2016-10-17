@@ -28,6 +28,7 @@ type Checker struct {
 }
 
 func New() Checker {
+	gocrawl.HttpClient.Timeout = 2 * time.Second
 	basicCheckers := []ResponseChecker{
 		new(HttpsChecker),
 	}
