@@ -9,7 +9,7 @@ import (
 type DnsRebindingChecker struct{}
 
 const (
-	dnsRebindingTitle            = "will attempt to connect to your domain(s) using an invalid *Host header*. If it is successful in doing so, then your domain might be used as a target of DNS rebinding attacks.\nWeb servers which reject HTTP requests with unrecognized Host headers or which strictly requires HTTPS connections are safe against DNS rebinding attacks."
+	dnsRebindingTitle            = "This scan connects to your domain(s) using an invalid *Host header*. If it is successful in doing so, then your domain might be used as a target of DNS rebinding attacks.\nWeb servers which reject HTTP requests with unrecognized Host headers or which strictly requires HTTPS connections are safe against DNS rebinding attacks."
 	dnsRebindingOkDescription    = "Safe either because the web server rejects unrecognized Host headers or strictly requires HTTPS"
 	dnsRebindingNotOkDescription = "Not safe because either the invalid Host header was ignored or HTTP connections are supported"
 )
