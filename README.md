@@ -40,11 +40,9 @@
     - [x] HSTS
     - [x] DNS rebinding
     - [x] CSP
-    - [ ] CORS
-    - [ ] Directory listing
+    - [ ] SSL Certificate Validation
  
  ## Stretch Goals
  - [x] Queueing of scan requests
- - [ ] Caching of scan results from past 15mins
- - [ ] Implement CORS checker
- - [ ] Implement directory listing checker
+ - [ ] Caching of scan results
+ - [ ] Implement SSL Certificate Validator
