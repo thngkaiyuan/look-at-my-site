@@ -2,21 +2,15 @@ package checker
 
 import (
 	"errors"
-	"net/http"
-	"time"
 )
 
 type HttpsChecker struct{}
 
 const (
-	title            = "This scan checks if your domain supports *HTTPS*, a protocol for secure communication over a computer network. It protects the communication between your web server and its clients by means of encryption and authentication.\nWeb servers which do not support HTTPS are at risk of man-in-the-middle (MITM) attacks which include eavesdropping and tampering of communication contents."
-	okDescription    = "Safe against MITM attacks if HTTPS is used"
-	notOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
+	httpsTitle            = "This scan checks if your domain supports *HTTPS*, a protocol for secure communication over a computer network. It protects the communication between your web server and its clients by means of encryption and authentication.\nWeb servers which do not support HTTPS are at risk of man-in-the-middle (MITM) attacks which include eavesdropping and tampering of communication contents."
+	httpsOkDescription    = "Safe against MITM attacks if HTTPS is used"
+	httpsNotOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
 )
-
-var httpClient = http.Client{
-	Timeout: 2 * time.Second,
-}
 
 func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	okUrls := make([]string, 0)
@@ -27,7 +21,7 @@ func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	count := 0
 	for domain := range in {
 		count++
-		go checkSite(domain, okCh, notOkCh)
+		go checkHttps(domain, okCh, notOkCh)
 	}
 
 	for i := 0; i < count; i++ {
@@ -41,10 +35,10 @@ func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	}
 
 	result := CheckerResult{
-		Title:            title,
-		OkDescription:    okDescription,
+		Title:            httpsTitle,
+		OkDescription:    httpsOkDescription,
 		OkUrls:           okUrls,
-		NotOkDescription: notOkDescription,
+		NotOkDescription: httpsNotOkDescription,
 		NotOkUrls:        notOkUrls,
 	}
 
@@ -55,7 +49,7 @@ func (c HttpsChecker) Check(in chan string, out chan CheckerResult) {
 	out <- result
 }
 
-func checkSite(domain string, okCh chan string, notOkCh chan string) {
+func checkHttps(domain string, okCh chan string, notOkCh chan string) {
 	_, httpErr := httpClient.Head("http://" + domain)
 	_, httpsErr := httpClient.Head("https://" + domain)
 

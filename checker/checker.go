@@ -2,6 +2,7 @@ package checker
 
 import (
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/PuerkitoBio/gocrawl"
@@ -31,9 +32,14 @@ func New() Checker {
 	gocrawl.HttpClient.Timeout = 2 * time.Second
 	basicCheckers := []ResponseChecker{
 		new(HttpsChecker),
+		new(HstsChecker),
 	}
 	extraCheckers := []ResponseChecker{}
 	return Checker{basicCheckers, extraCheckers}
+}
+
+var httpClient = http.Client{
+	Timeout: 2 * time.Second,
 }
 
 func (c Checker) CheckBasic(domain string) []CheckerResult {
@@ -45,6 +51,7 @@ func (c Checker) CheckBasic(domain string) []CheckerResult {
 	for i, ckr := range c.basicCheckers {
 		domainChannels[i] = make(chan string)
 		go ckr.Check(domainChannels[i], resultChannel)
+		domainChannels[i] <- domain
 	}
 
 	go func() {
@@ -54,8 +61,7 @@ func (c Checker) CheckBasic(domain string) []CheckerResult {
 		}
 	}()
 
-	for i := range c.basicCheckers {
-		domainChannels[i] <- domain
+	for range c.basicCheckers {
 		result := <-resultChannel
 		if result.err != nil {
 			continue
