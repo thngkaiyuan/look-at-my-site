@@ -11,7 +11,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	//"time"
+	"time"
 	"golang.org/x/net/html"
 )
 
@@ -52,8 +52,14 @@ func main() {
 	go filterQueue(queue, filteredQueue)
 
 	// pull from the filtered queue, add to the unfiltered queue
+	startTime := time.Now()
 	for uri := range filteredQueue {
 		enqueue(uri, queue, seedDomain, includeSubdomain)
+		duration := time.Since(startTime)
+		if (duration > time.Second * 30) {
+			fmt.Println("Crawler expired")
+			break
+		}
 	}
 }
 
