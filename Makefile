@@ -40,3 +40,11 @@ serve: check
 .PHONY: test
 test:
 	go test -v -cover "${PROJECT}"
+
+.PHONY: deploy
+deploy:
+	./deploy.sh
+
+.PHONY: stop
+stop:
+	./stop.sh
