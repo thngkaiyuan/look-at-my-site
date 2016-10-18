@@ -35,15 +35,15 @@
  - [x] Implement DNS rebinding checker
  - [x] Implement CSP checker
  - [x] Fill in proper texts on the landing page
- - [ ] Fill in proper texts for each checker
+ - [x] Fill in proper texts for each checker
     - [x] HTTPS
     - [x] HSTS
     - [x] DNS rebinding
     - [x] CSP
-    - [ ] Extended HSTS check/SSL Certificate Validation
  
  ## Stretch Goals
  - [x] Queueing of scan requests
  - [ ] Make sure that our site is safe against all the scanned attacks
  - [ ] Caching of scan results
  - [ ] Implement extended HSTS check/SSL Certificate validator
+ - [ ] Fill in texts for extended HSTS check/SSL Certificate validator
