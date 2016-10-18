@@ -155,6 +155,18 @@ table > thead > tr > th {
   height: 60px;
 }
 
+.v-space-5 {
+  height: 5px;
+}
+
+.v-space-20 {
+  height: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
 label {
   display: block;
   font-size: small;
