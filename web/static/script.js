@@ -1,5 +1,8 @@
 $( document ).ready(function() {
 
+    // Focus on input field upon load
+    $('#site').focus();
+
     // Submits the form when button is clicked
     $('#sbmit').click(submit_form);
     // Submits the form when enter key is pressed
