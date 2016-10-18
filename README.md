@@ -32,7 +32,7 @@
  - [x] Parse `comprehensive` parameter and call `CheckAll` or `CheckBasic` accordingly (basic only checks the root domain with the 3 basic checks whereas "all" checks subdomains and includes CORS and directory listing checkers)
  - [x] Implement HTTPS checker
  - [x] Implement HSTS checker
- - [ ] Implement DNS rebinding checker
+ - [x] Implement DNS rebinding checker
  - [x] Implement CSP checker
  - [x] Fill in proper texts on the landing page
  - [ ] Fill in proper texts for each checker
@@ -40,9 +40,10 @@
     - [x] HSTS
     - [x] DNS rebinding
     - [x] CSP
-    - [ ] SSL Certificate Validation
+    - [ ] Extended HSTS check/SSL Certificate Validation
  
  ## Stretch Goals
  - [x] Queueing of scan requests
+ - [ ] Make sure that our site is safe against all the scanned attacks
  - [ ] Caching of scan results
- - [ ] Implement SSL Certificate Validator
+ - [ ] Implement extended HSTS check/SSL Certificate validator
