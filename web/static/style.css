@@ -163,6 +163,13 @@ table > thead > tr > th {
   height: 20px;
 }
 
+.loader-text {
+  text-align: center;
+  font-size: small;
+  font-style: italic;
+  color: #888;
+}
+
 .hidden {
   display: none;
 }
