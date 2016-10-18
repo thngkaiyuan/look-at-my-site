@@ -68,6 +68,7 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 		} else {
 			// Only support HTTPS, safe from DNS Rebinding Attack
 			okCh <- domain
+			return
 		}
 	}
 
@@ -75,10 +76,10 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 	realReq, _ := http.NewRequest("GET", "http://" + domain, nil)
 	realReq.Host = domain
 	realResp, err := httpClient.Do(realReq)
-	realCode := realResp.Status
 	if err != nil {
 		return 
 	}
+	realCode := realResp.Status
 
 	realContent, err := ioutil.ReadAll(realResp.Body)
 	defer realResp.Body.Close()
@@ -90,17 +91,19 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 	fakeReq, _ := http.NewRequest("GET", "http://" + domain, nil)
 	fakeReq.Host = "127.0.0.1"
 	fakeResp, err := httpClient.Do(fakeReq)
-	fakeCode := fakeResp.Status
 	if err != nil {
 		// Error in connecting to domain with fake Host header, safe from DNS Rebinding Attack
 		okCh <- domain
+		return
 	}
+	fakeCode := fakeResp.Status
 
 	fakeContent, err := ioutil.ReadAll(fakeResp.Body)
 	defer fakeResp.Body.Close()
 	if err != nil {
 		// Error in response from domain with fake Host header, safe from DNS Rebinding Attack
 		okCh <- domain
+		return
 	}
 	
 	// Compare the result of the 2 requests
