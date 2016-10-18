@@ -14,6 +14,8 @@ const (
 	dnsRebindingNotOkDescription = "Not safe because either the invalid Host header was ignored or HTTP connections are supported"
 )
 
+const delta = 10
+
 func (c DnsRebindingChecker) Check(in chan string, out chan CheckerResult) {
 	okUrls := make([]string, 0)
 	notOkUrls := make([]string, 0)
@@ -69,23 +71,11 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 		}
 	}
 
-	// Try to connect to the domain using an invalid Host field in the header
-	fakeReq, _ := http.NewRequest("GET", "http://" + domain, nil)
-	fakeReq.Host = "look-at-my.site"
-	fakeResp, err := httpClient.Do(fakeReq)
-	if err != nil {
-		return
-	}
-
-	fakeContent, err := ioutil.ReadAll(fakeResp.Body)
-	defer fakeResp.Body.Close()
-	if err != nil {
-		return
-	}
-
 	// Try to connect to the domain without invalid Host field in the header
 	realReq, _ := http.NewRequest("GET", "http://" + domain, nil)
+	realReq.Host = domain
 	realResp, err := httpClient.Do(realReq)
+	realCode := realResp.Status
 	if err != nil {
 		return 
 	}
@@ -95,10 +85,28 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 	if err != nil {
 		return
 	}
+
+	// Try to connect to the domain using an invalid Host field in the header
+	fakeReq, _ := http.NewRequest("GET", "http://" + domain, nil)
+	fakeReq.Host = "127.0.0.1"
+	fakeResp, err := httpClient.Do(fakeReq)
+	fakeCode := fakeResp.Status
+	if err != nil {
+		// Error in connecting to domain with fake Host header, safe from DNS Rebinding Attack
+		okCh <- domain
+	}
+
+	fakeContent, err := ioutil.ReadAll(fakeResp.Body)
+	defer fakeResp.Body.Close()
+	if err != nil {
+		// Error in response from domain with fake Host header, safe from DNS Rebinding Attack
+		okCh <- domain
+	}
 	
 	// Compare the result of the 2 requests
-	if (string(fakeContent) == string(realContent)) {
-		// The results are similar, unsafe from DNS Rebinding Attack
+	lengthDiff := len(fakeContent) - len(realContent)
+	if (fakeCode == realCode) && (lengthDiff < delta && lengthDiff > -delta) {
+		// The results are exactly the same or the results length are similar, unsafe from DNS Rebinding Attack
 		notOkCh <- domain
 	} else {
 		// The results are not similar, safe from DNS Rebinding Attack
