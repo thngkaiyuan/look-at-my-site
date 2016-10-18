@@ -11,7 +11,7 @@ type DnsRebindingChecker struct{}
 const (
 	dnsRebindingTitle            = "In this scan, our server will attempt to connect to your domain(s) using an invalid *Host header*. If it is successful in doing so, then your domain might be used as a target of DNS rebinding attacks.\nWeb servers which reject HTTP requests with unrecognized Host headers or which strictly requires HTTPS connections are safe against DNS rebinding attacks."
 	dnsRebindingOkDescription    = "Safe either because the web server rejects unrecognized Host headers or strictly requires HTTPS"
-	dnsRebindingNotOkDescription = "Not safe because either the invalid Host header was ignored or HTTP connections are supported"
+	dnsRebindingNotOkDescription = "Unsafe because the invalid Host header was ignored and HTTP connections are supported"
 )
 
 const delta = 10
