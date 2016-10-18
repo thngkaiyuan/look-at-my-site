@@ -44,6 +44,9 @@
  ## Stretch Goals
  - [x] Queueing of scan requests
  - [ ] Make sure that our site is safe against all the scanned attacks
+ - [ ] Auto focus on input textbox upon document ready
+ - [ ] Prevent submits while a scan result is loading
+ - [ ] Allow reading of scan parameters from query strings
  - [ ] Caching of scan results
  - [ ] Implement extended HSTS check/SSL Certificate validator
  - [ ] Fill in texts for extended HSTS check/SSL Certificate validator
