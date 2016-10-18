@@ -28,23 +28,28 @@ $( document ).ready(function() {
         $results.show();
       });
 
-      function submit_form() {
-        var api = "/api/check";
-        var site_data = $('#site').val();
-        var comprehensive_data = false;
-        if($('#comprehensive').is(":checked")) {
-          comprehensive_data = true;
-        }
-
-        $.getJSON( api, {
-          domain: site_data,
-          comprehensive: comprehensive_data
-        }).done(function(data) {
-          render_results(data);
-        }).fail(function( jqxhr, textStatus, error ) {
-          render_error(site_data);
-        });
+    function submit_form() {
+      // Prevent further submits if a scan is already ongoing
+      if($('#loader').is(':visible')) {
+        return;
       }
+
+      var api = "/api/check";
+      var site_data = $('#site').val();
+      var comprehensive_data = false;
+      if($('#comprehensive').is(":checked")) {
+        comprehensive_data = true;
+      }
+
+      $.getJSON( api, {
+        domain: site_data,
+        comprehensive: comprehensive_data
+      }).done(function(data) {
+        render_results(data);
+      }).fail(function( jqxhr, textStatus, error ) {
+        render_error(site_data);
+      });
+    }
 
     // Renders results on page according to the JSON data received
     function render_results(jsonData) {
