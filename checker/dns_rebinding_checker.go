@@ -9,7 +9,7 @@ import (
 type DnsRebindingChecker struct{}
 
 const (
-	dnsRebindingTitle            = "In this scan, our server will attempt to connect to your domain(s) using an invalid *Host header*. If it is successful in doing so, then your domain might be used as a target of DNS rebinding attacks.\nWeb servers which reject HTTP requests with unrecognized Host headers or which strictly requires HTTPS connections are safe against DNS rebinding attacks."
+	dnsRebindingTitle            = "In this scan, our server will attempt to connect to your domain(s) using an invalid *Host header*. If it is successful in doing so, then your domain might be used as a target of *DNS rebinding attacks*.\nWeb servers which reject HTTP requests with unrecognized Host headers or which strictly requires HTTPS connections are safe against DNS rebinding attacks."
 	dnsRebindingOkDescription    = "Safe either because the web server rejects unrecognized Host headers or strictly requires HTTPS"
 	dnsRebindingNotOkDescription = "Unsafe because the invalid Host header was ignored and HTTP connections are supported"
 )
@@ -77,7 +77,7 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 	realReq.Host = domain
 	realResp, err := httpClient.Do(realReq)
 	if err != nil {
-		return 
+		return
 	}
 	realCode := realResp.Status
 
@@ -105,7 +105,7 @@ func checkDnsRebinding(domain string, okCh chan string, notOkCh chan string) {
 		okCh <- domain
 		return
 	}
-	
+
 	// Compare the result of the 2 requests
 	lengthDiff := len(fakeContent) - len(realContent)
 	if (fakeCode == realCode) && (lengthDiff < delta && lengthDiff > -delta) {

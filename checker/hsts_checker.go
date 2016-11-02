@@ -8,7 +8,7 @@ import (
 type HstsChecker struct{}
 
 const (
-	hstsTitle            = "This scan checks if your domain uses *HTTP Strict Transport Security (HSTS)*, which is a web security policy mechanism that allows web servers to declare that user agents should only interact with it using secure HTTPS connections.\nWithout HSTS, web servers may be vulnerable to protocol downgrade and cookie hijacking attacks. Web administrators are strongly encouraged to adopt HSTS on their web servers to thwart these attacks."
+	hstsTitle            = "This scan checks if your domain uses *HTTP Strict Transport Security (HSTS)*, which is a web security policy mechanism that allows web servers to declare that user agents should only interact with it using secure HTTPS connections.\nWithout HSTS, web servers may be vulnerable to *protocol downgrade* and *cookie hijacking attacks*. Web administrators are strongly encouraged to adopt HSTS on their web servers to thwart these attacks."
 	hstsOkDescription    = "Safe because HSTS is enforced"
 	hstsNotOkDescription = "Not safe because HSTS is not enforced"
 )

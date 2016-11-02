@@ -9,7 +9,7 @@ import (
 type CspChecker struct{}
 
 const (
-	cspTitle            = "This scan checks the *Content-Secuity-Policy (CSP)* of your domain(s). The CSP response header helps you reduce cross-site scripting (XSS) risks on modern browsers by declaring what dynamic resources are allowed to load via the response header.\nWeb servers which do not use CSP or which support inline scripts are at risk of XSS, clickjacking and other code injection attacks."
+	cspTitle            = "This scan checks the *Content-Secuity-Policy (CSP)* of your domain(s). The CSP response header helps you reduce cross-site scripting (XSS) risks on modern browsers by declaring what dynamic resources are allowed to load via the response header.\nWeb servers which do not use CSP or which support inline scripts are at risk of *XSS*, *clickjacking* and *other code injection attacks*."
 	cspOkDescription    = "Safe against known XSS attacks"
 	cspNotOkDescription = "Not safe because they either lack CSP or support 'unsafe-inline' scripts"
 )

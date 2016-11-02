@@ -7,7 +7,7 @@ import (
 type HttpsChecker struct{}
 
 const (
-	httpsTitle            = "This scan checks if your domain supports *HTTPS*, a protocol for secure communication over a computer network. It protects the confidentiality, integrity and authenticity of communications between your web server and its clients.\nWeb servers which do not support HTTPS are at risk of man-in-the-middle (MITM) attacks which include eavesdropping and tampering of communication contents."
+	httpsTitle            = "This scan checks if your domain supports *HTTPS*, a protocol for secure communication over a computer network. It protects the confidentiality, integrity and authenticity of communications between your web server and its clients.\nWeb servers which do not support HTTPS are at risk of *man-in-the-middle (MITM) attacks* which include *eavesdropping* and *tampering of communication contents*."
 	httpsOkDescription    = "Safe against MITM attacks if HTTPS is used"
 	httpsNotOkDescription = "Not safe against MITM attacks because HTTPS is not supported"
 )
