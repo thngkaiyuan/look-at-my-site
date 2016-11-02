@@ -118,7 +118,7 @@ $( document ).ready(function() {
     }
 
     function style(text) {
-      var bold_re = /\*([A-z -_\(\)]+)\*/g;
+      var bold_re = /\*([A-z -_\(\)]+?)\*/g;
       var bolded_text = text.replace(bold_re, "<b>$1<\/b>");
       var split_bolded_text = bolded_text.split('\n')
       var mapped_bolded_text = split_bolded_text.map(wrap_paragraph);
