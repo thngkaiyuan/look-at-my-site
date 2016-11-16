@@ -1,6 +1,20 @@
 # Look At My Site
 
+![image](https://cloud.githubusercontent.com/assets/10496851/20352327/d4e984d6-ac51-11e6-86ca-3ef018e32a45.png)
+
+
+## About
+
+Look At My Site is a free service that checks your domain (and subdomains if a comprehensive scan is chosen) against several best security practices for websites. The current checks supported by our service are:
+- Support for HTTPS
+- Use of HTTP Strict Transport Security (HSTS)
+- Use and correct configuration of Content-Security-Policy
+- Implementation of mechanisms against DNS rebinding attacks
+
+We hope to encourage the adoption of best security practices through the providence of this free service.
+
 ## Setup
+
 1. Install [golang](https://golang.org/doc/install)
   - Shortcut for macOS if you have `homebrew` installed.
   
